@@ -59,6 +59,9 @@ FinAlgoritmo
 // ==========================================
 // MÓDULOS DE REGISTRO
 // ==========================================
+
+//CREACION DE FUNCION "REGISTRAR AUTORES" esta función registra un autor y le asigna un ID
+//de manera autoomatica
 Función RegistrarAutor(autores Por Referencia,cA Por Referencia)
 	cA <- cA+1
 	Escribir 'Nombre del autor:'
@@ -67,34 +70,39 @@ Función RegistrarAutor(autores Por Referencia,cA Por Referencia)
 	Escribir 'Autor registrado con ID: ', autores[cA,1]
 FinFunción
 
-Función RegistrarLibro(libros Por Referencia,autores,cL Por Referencia,cA)
-	Definir idA Como Cadena
-	Definir i Como Entero
-	Escribir 'Título del libro:'
-	Leer libros[cL+1,2]
-	Escribir 'ID del Autor:'
-	Leer idA
-	cL <- cL+1
-	libros[cL,1]<-'LIB'+ConvertirATexto(cL)
-	libros[cL,3]<-idA
-	Escribir 'Cantidad inicial:'
-	Leer libros[cL,4]
-	libros[cL,5]<-'Disponible'
+//  CREACION DE FUNCION REGISTRARLIBRO: Esta función solicita los datos de un nuevo libro (título, 
+// autor y stock), le asigna un ID único automáticamente y marca su estado inicial.
+
+Función RegistrarLibro(libros Por Referencia, autores, cL Por Referencia, cA)
+Definir idA Como Cadena
+cL <- cL + 1 // Incrementamos primero para usar la posición correcta
+Escribir 'Título del libro:'
+Leer libros[cL, 2]
+Escribir 'ID del Autor:'
+Leer idA
+libros[cL, 1] <- 'LIB' + ConvertirATexto(cL)
+libros[cL, 3] <- idA
+Escribir 'Cantidad inicial:'
+Leer libros[cL, 4]
+libros[cL, 5] <- 'Disponible'
 FinFunción
 
-// Cesia
+// CREACION DE FUNCION REGISTRARSOCIO: Registra un nuevo socio en el sistema, generando su ID 
+	// único automáticamente e inicializando sus contadores de multas y libros 
+	// prestados en cero.
+
 Función RegistrarSocio(socios Por Referencia,cS Por Referencia)
 	cS <- cS+1
 	Escribir 'Nombre del socio:'
 	Leer socios[cS,2]
 	socios[cS,1]<-'SOC'+ConvertirATexto(cS)
-	socios[cS,3]<-'0'
-	socios[cS,4]<-'0' // Libros poseidos
-	Escribir '>> Registro exitoso. El ID asignado es: ', socios[cS,1] // Multa
+	socios[cS,3]<-'0'//inicializa las multas
+	socios[cS,4]<-'0' // inicializa los Libros poseidos
+	Escribir '>> Registro exitoso. El ID asignado es: ', socios[cS,1] 
 FinFunción
 
 // ==========================================
-// MÓDULOS DE GESTIÓN (GABRIEL)
+// MÓDULOS DE GESTIÓN 
 // ==========================================
 Función GestionarPrestamo(libros Por Referencia,cL,socios Por Referencia,cS,prestamos Por Referencia,cP Por Referencia)
 	Definir idS, idL Como Cadena
@@ -161,7 +169,7 @@ Función GestionarPrestamo(libros Por Referencia,cL,socios Por Referencia,cS,pres
 	FinSi
 FinFunción
 
-// GABRIEL OFICIAL
+// 2
 Subproceso GestionarDevolucion(libros Por Referencia, cL, socios Por Referencia, cS, prestamos Por Referencia)
 	Definir idL, idS Como Texto
 	Definir i, j, d Como Entero
@@ -267,12 +275,28 @@ Función PagarMulta(socios Por Referencia,cS)
 	FinSi
 FinFunción
 
-Función VerInventario(libros,cL,autores,cA)
-	Definir i Como Entero
-	Escribir 'ID | TITULO | STOCK | ESTADO'
-	Para i<-1 Hasta cL Hacer
-		Escribir libros[i,1], ' | ', libros[i,2], ' | ', libros[i,4], ' | ', libros[i,5]
+Función VerInventario(libros, cL, autores, cA)
+Definir i, j Como Entero
+Definir nombreAutor Como Cadena
+
+Escribir "======================================================================"
+Escribir "ID | TÍTULO  | AUTOR | STOCK | ESTADO"
+Escribir "----------------------------------------------------------------------"
+
+Para i <- 1 Hasta cL Hacer
+	nombreAutor <- "Desconocido" // Valor por si no se encuentra el ID
+	
+	// BÚSQUEDA CRUZADA: Buscamos el ID del autor en la matriz de autores
+	Para j <- 1 Hasta cA Hacer
+		Si autores[j, 1] = libros[i, 3] Entonces
+			nombreAutor <- autores[j, 2]
+		FinSi
 	FinPara
+	
+	// Imprimimos la línea completa con el nombre del autor ya localizado
+	Escribir libros[i, 1], " | ", libros[i, 2], " | ", nombreAutor, " | ", libros[i, 4], " | ", libros[i, 5]
+FinPara
+Escribir "======================================================================"
 FinFunción
 
 Función VerSocios(socios, cS)
