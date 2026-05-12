@@ -2,7 +2,7 @@ Algoritmo SistemaBibliotecarioFinal
 	// 1. DIMENSIÓN DE MATRICES
 	Definir autores, libros, socios, prestamos Como Cadena
 	Dimensionar autores(101,3), libros(101,6), socios(101,5), prestamos(501,6)
-	Definir cAutores, cLibros, cSocios, cPrestamos Como Entero
+	Definir contador_autores, cLibros, cSocios, cPrestamos Como Entero
 	Definir opcion_menu Como Cadena
 	cAutores <- 0
 	cLibros <- 0
@@ -169,7 +169,7 @@ Función GestionarPrestamo(libros Por Referencia,cL,socios Por Referencia,cS,pres
 	FinSi
 FinFunción
 
-// 2
+// Devoluciones
 Subproceso GestionarDevolucion(libros Por Referencia, cL, socios Por Referencia, cS, prestamos Por Referencia)
 	Definir idL, idS Como Texto
 	Definir i, j, d Como Entero
@@ -187,11 +187,11 @@ Subproceso GestionarDevolucion(libros Por Referencia, cL, socios Por Referencia,
 	Para i <- 1 Hasta 500 Hacer
 		// Validamos ID Libro, ID Socio y que el prestamo este Activo
 		Si prestamos[i, 2] = idL Y prestamos[i, 1] = idS Y prestamos[i, 3] = "Activo" Entonces
-			Si encontrado = Falso Entonces
+			Si encontrado = Falso Entonces 
 				encontrado <- Verdadero
 				prestamos[i, 3] <- "Finalizado"
 				
-				Escribir "Libro: ", idL, " del Socio: ", idS, " identificado."
+				Escribir "Libro: ", idLibro, " del Socio: ", idSocio, " identificado."
 				Escribir "Días totales que tuvo el libro:"
 				Leer d
 				
